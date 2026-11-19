@@ -1,35 +1,7 @@
 #include <iostream>
+#include "functions.h"
 
-int setHeadRow( int headRowCurr, char playerMove){
-    if (playerMove == 'w')
-        return --headRowCurr;
-    else if (playerMove == 's')
-        return ++headRowCurr;
-    else
-        return headRowCurr;
-}
-int setHeadCol( int headColCurr, char playerMove){
-    if (playerMove == 'a')
-        return --headColCurr;
-    else if (playerMove == 'd')
-        return ++headColCurr;
-    else
-        return headColCurr;
-}
-char getCellChar( int cellCol, int cellRow, int headCol, int headRow){
-    if(cellCol == headCol && cellRow == headRow)
-        return 'O';
-    else
-        return '.';
-}
-void drawBoard(const int boardRowSize, const int boardColSize, int headRowCurr, int headColCurr){
-    for(int row{}; row < boardRowSize; ++row){
-        for(int col{}; col < boardColSize; ++col){
-            std::cout << getCellChar(col, row, headColCurr, headRowCurr);
-        }
-        std::cout << '\n';
-    }
-}
+#if 0
 int main(){
     const int boardRowSize{5};
     const int boardColSize{5};
@@ -58,4 +30,15 @@ int main(){
     }
 return 0;
 }
+#endif
 
+int main(){
+    const int boardRowSize{5};
+    const int boardColSize{5};
+
+    appleGeneratorRow(boardRowSize);
+    appleGeneratorCol(boardColSize);
+
+    
+    return 0;
+}
