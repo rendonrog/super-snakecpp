@@ -5,11 +5,16 @@
 int main(){
     const int boardRowSize{8};
     const int boardColSize{8};
-    int headRowCurr{2};
-    int headColCurr{2};
+    int headRowCurr{boardRowSize / 2};
+    int headColCurr{boardColSize / 2};
     char playerMove{};
     int appleRow = appleGeneratorRow(boardRowSize);
     int appleCol = appleGeneratorCol(boardColSize);
+
+    while(headColCurr == appleCol && headRowCurr == appleRow){
+        appleRow = appleGeneratorRow(boardRowSize);
+        appleCol = appleGeneratorCol(boardColSize);
+    }
 
     drawBoard(boardRowSize, boardColSize, headRowCurr, headColCurr, appleCol, appleRow);
     bool isRunning{true};
@@ -34,8 +39,10 @@ int main(){
             }
             else{
                 if(headColCurr == appleCol && headRowCurr == appleRow){
-                appleCol = appleGeneratorCol(boardColSize);
-                appleRow = appleGeneratorRow(boardRowSize);
+                    do{
+                        appleCol = appleGeneratorCol(boardColSize);
+                        appleRow = appleGeneratorRow(boardRowSize);
+                    }while(headColCurr == appleCol && headRowCurr == appleRow);
             }
             drawBoard(boardRowSize, boardColSize, headRowCurr, headColCurr, appleCol, appleRow);
         }
