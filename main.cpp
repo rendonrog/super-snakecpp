@@ -1,15 +1,17 @@
 #include <iostream>
 #include "functions.h"
 
-#if 0
+#if 1
 int main(){
-    const int boardRowSize{5};
-    const int boardColSize{5};
+    const int boardRowSize{8};
+    const int boardColSize{8};
     int headRowCurr{2};
     int headColCurr{2};
     char playerMove{};
+    int appleRow = appleGeneratorRow(boardRowSize);
+    int appleCol = appleGeneratorCol(boardColSize);
 
-    drawBoard(boardRowSize, boardColSize, headRowCurr, headColCurr);
+    drawBoard(boardRowSize, boardColSize, headRowCurr, headColCurr, appleCol, appleRow);
     bool isRunning{true};
     while (isRunning)
     {
@@ -23,22 +25,15 @@ int main(){
             std::cout << "GAME OVER\n";
         }
         else{
-            headRowCurr = setHeadRow(headRowCurr, playerMove);
-            headColCurr = setHeadCol(headColCurr, playerMove);
-            drawBoard(boardRowSize, boardColSize, headRowCurr, headColCurr);
+            setHeadRow(headRowCurr, playerMove);
+            setHeadCol(headColCurr, playerMove);
+            if(headColCurr == appleCol && headRowCurr == appleRow){
+                appleCol = appleGeneratorCol(boardColSize);
+                appleRow = appleGeneratorRow(boardRowSize);
+            }
+            drawBoard(boardRowSize, boardColSize, headRowCurr, headColCurr, appleCol, appleRow);
         }
     }
 return 0;
 }
 #endif
-
-int main(){
-    const int boardRowSize{5};
-    const int boardColSize{5};
-
-    appleGeneratorRow(boardRowSize);
-    appleGeneratorCol(boardColSize);
-
-    
-    return 0;
-}
