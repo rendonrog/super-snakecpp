@@ -27,13 +27,20 @@ int main(){
         else{
             setHeadRow(headRowCurr, playerMove);
             setHeadCol(headColCurr, playerMove);
-            if(headColCurr == appleCol && headRowCurr == appleRow){
+            
+            if(headColCurr >= boardColSize || headRowCurr >= boardRowSize || headColCurr < 0 || headRowCurr < 0){
+                isRunning = !isRunning;
+                std::cout << "GAME OVER\n";
+            }
+            else{
+                if(headColCurr == appleCol && headRowCurr == appleRow){
                 appleCol = appleGeneratorCol(boardColSize);
                 appleRow = appleGeneratorRow(boardRowSize);
             }
             drawBoard(boardRowSize, boardColSize, headRowCurr, headColCurr, appleCol, appleRow);
         }
     }
+}   
 return 0;
 }
 #endif
