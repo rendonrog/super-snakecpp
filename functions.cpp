@@ -1,46 +1,68 @@
 #include "functions.h"
 #include <iostream>
-#include <random>
-
-static std::mt19937 mt{ std::random_device{}() };
-
-void setHeadRow( int& headRowCurr, char playerMove){
-    if (playerMove == 'w')
-        --headRowCurr;
-    else if (playerMove == 's')
-        ++headRowCurr;
-}
-void setHeadCol( int& headColCurr, char playerMove){
-    if (playerMove == 'a')
-        --headColCurr;
-    else if (playerMove == 'd')
-        ++headColCurr;
+char toChar(CellChar cell){
+    switch(cell){
+        case CellChar::snakeHead: return 'O';
+        case CellChar::apple:     return 'A';
+        case CellChar::board:     return '.';
+    }
+    return '?';
 }
 
-int appleGeneratorRow(const int boardRowSize){
-    std::uniform_int_distribution generatorRow{0, boardRowSize  - 1};
-    return generatorRow(mt);
+Movement readMovement(char key){
+    switch(key){
+        case 'w': case 'W': return Movement::up;
+        case 's': case 'S': return Movement::down;
+        case 'a': case 'A': return Movement::left;
+        case 'd': case 'D': return Movement::right;
+        case 'q': case 'Q': return Movement::quit;
+        default:            return Movement::none;
+
+    }
 }
 
-int appleGeneratorCol(const int boardColSize){
-    std::uniform_int_distribution generatorCol{0, boardColSize  - 1};
-    return generatorCol(mt);
+void setSnakeHead(PairInt& snakeHeadLocation, Movement playerMove){
+    if(playerMove == Movement::up){
+        --snakeHeadLocation.first;
+    }else if(playerMove == Movement::down){
+        ++snakeHeadLocation.first;
+    }else if(playerMove == Movement::left){
+        --snakeHeadLocation.second;
+    }else if(playerMove == Movement::right){
+        ++snakeHeadLocation.second;
+    }
 }
 
-char getCellChar(int cellCol, int cellRow, int headCol, int headRow, int appleCol, int appleRow){    
-    if(cellCol == headCol && cellRow == headRow)
-        return 'O';
-    else if(cellCol == appleCol && cellRow == appleRow)
-        return 'A';
-    else
-        return '.';
+std::pair<int, int> appleLocationGenerator(PairInt boardSize){
+    std::uniform_int_distribution<int> appleRowGen{0, boardSize.first - 1};
+    std::uniform_int_distribution<int> appleColGen{0, boardSize.second - 1};
+    std::pair<int, int> appleGenerator{appleRowGen(mt), appleColGen(mt)};
+    return appleGenerator;
 }
-void drawBoard(const int boardRowSize, const int boardColSize, int headRowCurr, int headColCurr, int appleCol, int appleRow){
-        for(int row{}; row < boardRowSize; ++row){
-        for(int col{}; col < boardColSize; ++col){
-            std::cout << getCellChar(col, row, headColCurr, headRowCurr, appleCol, appleRow);
+
+CellChar getCellCharacter(PairInt cell, PairInt snakeHeadLocation, PairInt appleLocation){
+    if(cell == snakeHeadLocation){
+        return CellChar::snakeHead;
+    }else if(cell == appleLocation){
+        return CellChar::apple;
+    }else{
+        return CellChar::board;
+    }
+}
+
+void drawBoard(PairInt boardSize, PairInt snakeHeadLocation, PairInt appleLocation, int& playerScore){
+    std::cout << "PLAYER SCORE: " << playerScore << '\n';
+    for(int row{}; row < boardSize.first; ++row){
+        for(int col{}; col < boardSize.second; ++col){
+            PairInt cell {row, col};
+            std::cout << toChar(getCellCharacter(cell, snakeHeadLocation, appleLocation));
         }
         std::cout << '\n';
     }
 }
+
+
+
+
+
 

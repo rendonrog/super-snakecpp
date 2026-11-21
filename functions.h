@@ -1,11 +1,32 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
+#include <utility>
+#include <random>
 
-void setHeadRow(int& headRowCurr, char playerMove);
-void setHeadCol(int& headColCurr, char playerMove);
-int appleGeneratorRow(const int boardRowSize);
-int appleGeneratorCol(const int boardColSize);
-char getCellChar(int cellCol, int cellRow, int headCol, int headRow, int appleCol, int appleRow);
-void drawBoard(const int boardRowSize, const int boardColSize, int headRowCurr, int headColCurr, int appleCol, int appleRow);
+using PairInt = std::pair <int, int>;
+
+static std::mt19937 mt{ std::random_device{}() };
+
+enum class Movement{
+    up,
+    down,
+    left,
+    right,
+    quit,
+    none,
+};
+
+enum class CellChar{
+    snakeHead,
+    apple,
+    board,
+};
+
+char toChar(CellChar cell);
+Movement readMovement(char key);
+void setSnakeHead(PairInt& snakeHeadLocation, Movement playerMove);
+std::pair<int, int> appleLocationGenerator(PairInt boardSize);
+CellChar getCellCharacter(PairInt cell, PairInt snakeHeadLocation, PairInt appleLocation);
+void drawBoard(PairInt boardSize, PairInt snakeHeadLocation, PairInt appleLocation, int& playerScore);
 
 #endif
